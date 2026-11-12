@@ -1,14 +1,13 @@
-from network import Network
+from agentnet.network import Network
+
 
 class Agent:
 
     def __init__(self, agent_id):
         self.id = agent_id
-
         self.knowledge = set()
 
         print(f'Agent {self.id} initialized with knowledge: {self.knowledge}')
-
 
     def receive_information(self, information):
         self.knowledge.add(information)
@@ -19,39 +18,34 @@ class Agent:
 
     def broadcast_information(self, information, network, agents):
         neighbors = network.get_neighbors(self.id)
+
         for neighbor_id in neighbors:
             neighbor = agents[neighbor_id]
             self.send_information(neighbor, information, network)
 
 
-agent1 = Agent(1)
-agent2 = Agent(2)
-agent3 = Agent(3)
+if __name__ == "__main__":
 
-agents = {
-    1: agent1,
-    2: agent2,
-    3: agent3
-}
-network = Network()
+    agent1 = Agent(1)
+    agent2 = Agent(2)
+    agent3 = Agent(3)
 
-network.connect(agent1.id, agent2.id)
-network.connect(agent1.id, agent3.id)
+    agents = {
+        1: agent1,
+        2: agent2,
+        3: agent3
+    }
 
-agent1.receive_information('A')
-agent2.receive_information('B')
+    network = Network()
 
-agent1.broadcast_information('A', network, agents)
+    network.connect(agent1.id, agent2.id)
+    network.connect(agent1.id, agent3.id)
 
-print(agent1.knowledge)
-print(agent2.knowledge)
-print(agent3.knowledge)
+    agent1.receive_information('A')
+    agent2.receive_information('B')
 
+    agent1.broadcast_information('A', network, agents)
 
-network.connect(1, 2)
-
-neighbors = network.get_neighbors(1)
-neighbors.add(99)
-
-print(neighbors)
-print(network.get_neighbors(1))
+    print(agent1.knowledge)
+    print(agent2.knowledge)
+    print(agent3.knowledge)
