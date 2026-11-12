@@ -25,10 +25,7 @@ class Network:
             self.connections[agent2].discard(agent1)
 
     def is_connected(self, agent1, agent2):
-        if agent1 in self.connections and agent2 in self.connections[agent1]:
-            return True 
-        else: 
-            return False
+        return agent2 in self.connections.get(agent1, ())
 
     def get_neighbors(self, agent_id):
         if agent_id in self.connections:
